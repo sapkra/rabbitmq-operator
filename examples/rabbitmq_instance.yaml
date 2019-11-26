@@ -2,7 +2,7 @@ apiVersion: indeed.com/v1alpha1
 kind: RabbitMQCustomResource
 metadata:
   name: myrabbitmq
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 spec:
   rabbitMQImage: "rabbitmq:3.7.8-alpine"
   initContainerImage: "busybox:latest"
@@ -42,7 +42,7 @@ spec:
             - address: "myrabbitmq-svc" # shovel messages from this cluster to itself
               vhost: "/"
           secretName: "mynewadmin-myrabbitmq-user-secret" # user created below
-          secretNamespace: "rabbitmqs"
+          secretNamespace: "rabbitmq-operator"
     users:
       - username: "mynewadmin"
         tags:

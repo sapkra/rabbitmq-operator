@@ -24,19 +24,21 @@ You must also have a Docker registry that both your development environment and 
 The example assumes you have Rook-managed storage deployed. You can read about Rook at https://rook.io/.
 
 ## Deploying the operator
-Use the script `deploy-operator.sh` to build and push the operator image. At the end you should see a `rabbitmq-operator` pod spin up in the `rabbitmqs` namespace.
+Use the script `build-push-image.sh` to build and push the operator image and the `deploy-operator.sh` to deploy the operator. At the end you should see a `rabbitmq-operator` pod spin up in the `rabbitmq-operator` namespace.
 ```
-LOCAL_DOCKER_REGISTRY=registry.local.tld ./scripts/deploy-operator.sh
+export LOCAL_DOCKER_REGISTRY=registry.local.tld
+./scripts/build-push-image.sh
+./scripts/deploy-operator.sh
 ```
 
 ## Deploying a cluster
-Apply the [example RabbitMQCustomResource](examples/rabbitmq_instance.yaml). By default, this deploys a cluster with 3 instances in the `rabbitmqs` namespace.
+Apply the [example RabbitMQCustomResource](examples/rabbitmq_instance.yaml). By default, this deploys a cluster with 3 instances in the `rabbitmq-operator` namespace.
 ```
 kubectl apply -f examples/rabbitmq_instance.yaml
 ```
 
 ## Connecting to the cluster
-For each cluster, a service called `<cluster name>-svc` will be created. This is a standard (non-headless) service. Nodes will be added to the relevant Endpoints as soon as their healthcheck returns ok. A cluster named `myrabbitmq` in namespace `rabbitmqs` can be internally accessed at `myrabbitmq.rabbitmqs.svc.cluster.local`. Standard RabbitMQ ports are exposed.
+For each cluster, a service called `<cluster name>-svc` will be created. This is a standard (non-headless) service. Nodes will be added to the relevant Endpoints as soon as their healthcheck returns ok. A cluster named `myrabbitmq` in namespace `rabbitmq-operator` can be internally accessed at `myrabbitmq.rabbitmq-operator.svc.cluster.local`. Standard RabbitMQ ports are exposed.
 
 To access a RabbitMQ cluster from outside the Kubernetes cluster, you need to either expose the Rabbit cluster using a NodePort or set `createLoadBalancer` to `true`. This will provision a LoadBalancer service with name `<cluster-name>-svc-lb` (assuming your environment supports it). You can then access your cluster using the LoadBalancer IP and standard RabbitMQ ports.
 

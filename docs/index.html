@@ -29,15 +29,15 @@
         <p>The example assumes you have Rook-managed storage deployed. You can read about Rook <a href="https://rook.io/">here</a>.</p>
 
         <h2>Deploying the operator</h2>
-        <p>Apply the <a href="https://github.com/indeedeng/rabbitmq-operator/blob/master/examples/rabbitmq_operator.yaml">operator configuration yaml</a>. You should see a <code>rabbitmq-operator</code> pod spin up in the <code>rabbitmqs</code> namespace.</p>
+        <p>Apply the <a href="https://github.com/indeedeng/rabbitmq-operator/blob/master/examples/rabbitmq_operator.yaml">operator configuration yaml</a>. You should see a <code>rabbitmq-operator</code> pod spin up in the <code>rabbitmq-operator</code> namespace.</p>
         <p><code>kubectl apply -f examples/rabbitmq_operator.yaml</code></p>
 
         <h2>Deploying a cluster</h2>
-        <p>Apply the <a href="https://github.com/indeedeng/rabbitmq-operator/blob/master/examples/rabbitmq_instance.yaml">example RabbitMQCustomResource</a>. By default, this deploys a cluster with 3 instances in the <code>rabbitmqs</code> namespace.</p>
+        <p>Apply the <a href="https://github.com/indeedeng/rabbitmq-operator/blob/master/examples/rabbitmq_instance.yaml">example RabbitMQCustomResource</a>. By default, this deploys a cluster with 3 instances in the <code>rabbitmq-operator</code> namespace.</p>
         <p><code>kubectl apply -f examples/rabbitmq_instance.yaml</code></p>
 
         <h2>Connecting to the cluster</h2>
-        <p>For each cluster, a service called <code>&lt;cluster name&gt;-svc</code> will be created. This is a standard (non-headless) service. Nodes will be added to the relevant Endpoints as soon as their healthcheck returns ok. A cluster named <code>myrabbitmq</code> in namespace <code>rabbitmqs</code> can be internally accessed at <code>myrabbitmq.rabbitmqs.svc.cluster.local</code>. Standard RabbitMQ ports are exposed.</p>
+        <p>For each cluster, a service called <code>&lt;cluster name&gt;-svc</code> will be created. This is a standard (non-headless) service. Nodes will be added to the relevant Endpoints as soon as their healthcheck returns ok. A cluster named <code>myrabbitmq</code> in namespace <code>rabbitmq-operator</code> can be internally accessed at <code>myrabbitmq.rabbitmq-operator.svc.cluster.local</code>. Standard RabbitMQ ports are exposed.</p>
 
         <p>To access a RabbitMQ cluster from outside the Kubernetes cluster, you need to either expose the Rabbit cluster using a NodePort or set <code>createLoadBalancer</code> to <code>true</code>. This will provision a LoadBalancer service with name <code>&lt;cluster-name&gt;-svc-lb</code> (assuming your environment supports it). You can then access your cluster using the LoadBalancer IP and standard RabbitMQ ports.</p>
 

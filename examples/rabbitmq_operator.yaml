@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: rabbitmqs
+  name: rabbitmq-operator
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: rabbitmqs.indeed.com
+  name: rabbitmq-operator.indeed.com
 spec:
   group: indeed.com
   names:
@@ -73,13 +73,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: rabbitmq-operator
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: rabbitmq-user
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -105,13 +105,13 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: rabbitmq-operator
-    namespace: rabbitmqs
+    namespace: rabbitmq-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: rabbitmq-operator
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 rules:
   - apiGroups:
       - ""
@@ -163,7 +163,7 @@ rules:
   - apiGroups:
       - indeed.com
     resources:
-      - rabbitmqs
+      - rabbitmq-operator
     verbs:
       - get
       - watch
@@ -184,7 +184,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: rabbitmq-user
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 rules:
   - apiGroups:
       - ""
@@ -197,7 +197,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: rabbitmq-operator
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -205,13 +205,13 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: rabbitmq-operator
-    namespace: rabbitmqs
+    namespace: rabbitmq-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: rabbitmq-user
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -219,7 +219,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: rabbitmq-user
-    namespace: rabbitmqs
+    namespace: rabbitmq-operator
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -228,7 +228,7 @@ metadata:
     heritage: indeed.com
     operator: rabbitmq.operator.indeed.com
   name: rabbitmq-operator
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 spec:
   replicas: 1
   selector:
@@ -263,7 +263,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-config
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 data:
   enabled_plugins: |
     [rabbitmq_management,rabbitmq_peer_discovery_k8s,rabbitmq_shovel,rabbitmq_shovel_management].
@@ -284,7 +284,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-startup-scripts
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 data:
   # This ConfigMap defines a script that is run as the pod starts up.  It exists to create a
   # monitoring user (and any other users we may decide on in the future).  There aren't really
@@ -308,7 +308,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-probes
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 data:
   # Define the script used by our readiness probe.
   readiness.sh: |
@@ -337,7 +337,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-operator-logger-configuration
-  namespace: rabbitmqs
+  namespace: rabbitmq-operator
 data:
   # Define additional logging configuration.
   custom-logger-levels.xml: |

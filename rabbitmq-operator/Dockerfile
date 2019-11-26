@@ -1,9 +1,12 @@
-FROM openjdk:11.0.1-jre
-RUN groupadd -r -g 999 rabbitmq-operator
-RUN useradd --no-log-init -r -u 999 -g rabbitmq-operator rabbitmq-operator
-COPY build/distributions/rabbitmq-operator.zip /app/rabbitmq-operator.zip
-RUN chown rabbitmq-operator:rabbitmq-operator -R /app
-USER rabbitmq-operator
+FROM gradle:6.0.1-jdk11
+COPY . /tmp/rabbitmq-operator
+WORKDIR /tmp/rabbitmq-operator/rabbitmq-operator
+RUN gradle build
 WORKDIR /app
-RUN unzip rabbitmq-operator.zip
+RUN cp /tmp/rabbitmq-operator/rabbitmq-operator/build/distributions/rabbitmq-operator.zip /app/rabbitmq-operator.zip
+RUN rm -rf /tmp/rabbitmq-operator
+RUN chown 1001:0 -R /app
+USER 1001
+WORKDIR /app
+RUN unzip rabbitmq-operator.zip && rm -rf rabbitmq-operator.zip
 CMD ["java", "-cp", "rabbitmq-operator/lib/*", "com.indeed.operators.rabbitmq.RabbitMQOperator"]
