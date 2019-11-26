@@ -1,0 +1,23 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rabbitmq-operator
+subjects:
+- kind: ServiceAccount
+  name: rabbitmq-operator
+roleRef:
+  kind: Role
+  name: rabbitmq-operator
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rabbitmq-user
+subjects:
+- kind: ServiceAccount
+  name: rabbitmq-user
+roleRef:
+  kind: Role
+  name: rabbitmq-user
+  apiGroup: rbac.authorization.k8s.io

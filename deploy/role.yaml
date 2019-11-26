@@ -1,0 +1,84 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  name: rabbitmq-operator
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+      - pods/exec
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+      - services
+      - pods
+      - persistentvolumeclaims
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - apps
+    resources:
+      - statefulsets
+    verbs:
+      - create
+      - delete
+      - get
+      - patch
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - replicasets
+    verbs:
+      - list
+  - apiGroups:
+      - policy
+    resources:
+      - poddisruptionbudgets
+    verbs:
+      - create
+      - delete
+      - get
+      - patch
+  - apiGroups:
+      - indeed.com
+    resources:
+      - rabbitmq-operator
+    verbs:
+      - get
+      - watch
+      - patch
+      - list
+  - apiGroups:
+      - indeed.com
+    resources:
+      - rabbitmqnetworkpartitions
+    verbs:
+      - watch
+      - get
+      - delete
+      - list
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rabbitmq-user
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - get
