@@ -16,8 +16,6 @@ spec:
       containers:
         - name: rabbitmq-operator
           image: indeedoss/rabbitmq-operator:latest
-          command:
-          - rabbitmq-operator
           imagePullPolicy: Always
           resources:
             limits:
